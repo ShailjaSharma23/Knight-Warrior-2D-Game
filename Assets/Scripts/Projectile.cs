@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour
 {
     if(hit) return;
 
-    transform.position += Vector3.right * direction * 5f * Time.deltaTime;
+    transform.position += Vector3.right * direction * speed * Time.deltaTime;
 
     lifetime+= Time.deltaTime;
     if(lifetime>5) gameObject.SetActive(false);
@@ -51,7 +51,7 @@ public class Projectile : MonoBehaviour
         boxCollider.enabled = true;
 
         anim.ResetTrigger("explode");
-        anim.Play("Idle");
+        anim.Play("Fireball_Idle");
 
         float localScaleX = transform.localScale.x;
         if (Mathf.Sign(localScaleX) != direction)
