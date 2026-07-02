@@ -24,14 +24,14 @@ public class Projectile : MonoBehaviour
     // }
 
     private void Update()
-{
-    if(hit) return;
+    {
+        if (hit) return;
 
-    transform.position += Vector3.right * direction * speed * Time.deltaTime;
+        transform.position += Vector3.right * direction * speed * Time.deltaTime;
 
-    lifetime+= Time.deltaTime;
-    if(lifetime>5) gameObject.SetActive(false);
-}
+        lifetime += Time.deltaTime;
+        if (lifetime > 5) gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -39,12 +39,17 @@ public class Projectile : MonoBehaviour
         hit = true;
         boxCollider.enabled = false;
         anim.SetTrigger("explode");
+
+        if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Health>().TakeDamage(1);
+        }
     }
-  
+
 
     public void SetDirection(float _direction)
     {
-        lifetime=0;
+        lifetime = 0;
         direction = _direction;
         gameObject.SetActive(true);
         hit = false;
