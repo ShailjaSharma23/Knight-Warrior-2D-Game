@@ -178,6 +178,9 @@ MonoBehaviour:
   startingHealth: 3
   iFramesDuration: 0
   numberOfFlashes: 0
+  components:
+  - {fileID: 1151750027926440170}
+  - {fileID: 0}
 --- !u!114 &1151750027926440170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,8 +195,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
   attackCooldown: 2
   range: 2.5
-  colliderDistance: 0.45
   damage: 2
+  colliderDistance: 0.45
   boxCollider: {fileID: 3742342939810272748}
   playerLayer:
     serializedVersion: 2
