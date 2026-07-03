@@ -12,10 +12,14 @@ public class Spikehead : EnemyDamage
 
     private bool attacking;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip spikeheadSound;
+
     private Vector3[] directions = new Vector3[4];
 
     private void OnEnable()
     {
+        Debug.Log($"{name} enabled", this);
         Stop();
     }
     
@@ -76,6 +80,7 @@ public class Spikehead : EnemyDamage
     {
         base.OnTriggerEnter2D(collision);
         // stop after hitting something
+        SoundManager.instance.PlaySound(spikeheadSound);
         Stop();
     }
 }

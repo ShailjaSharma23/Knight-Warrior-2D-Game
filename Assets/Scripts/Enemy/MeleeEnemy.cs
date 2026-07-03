@@ -14,6 +14,9 @@ public class MeleeEnemy : MonoBehaviour
     [Header("Player Layer")]
     [SerializeField] private LayerMask playerLayer;
 
+    [Header("Attack Sound")]
+    [SerializeField] private AudioClip attackSound;
+
     // References
     private Animator anim;
     private Health playerHealth;
@@ -34,10 +37,11 @@ public class MeleeEnemy : MonoBehaviour
         // attack only if player in sight
         if (PlayerInSight())
         {
-            if (cooldownTimer >= attackCooldown)
+            if (cooldownTimer >= attackCooldown && playerHealth.currentHealth > 0)
             {
                 anim.SetTrigger("meleeAttack");
                 cooldownTimer = 0;
+                SoundManager.instance.PlaySound(attackSound);
             }
         }
 

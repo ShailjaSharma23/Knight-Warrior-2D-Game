@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private BoxCollider2D boxCollider;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip jumpSound;
+
     private void Awake()
     {
         // Get references to components from object
@@ -72,6 +75,11 @@ public class PlayerMovement : MonoBehaviour
             if (jumpPressed)
             {
                 Jump();
+
+                if(Keyboard.current.spaceKey.wasPressedThisFrame && (isGrounded() || onWall()))
+                {
+                    SoundManager.instance.PlaySound(jumpSound);
+                }
             }
         }
         else
@@ -83,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded())
         {
             body.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            SoundManager.instance.PlaySound(jumpSound);
             jumpPressed = false;
         }
         else if (onWall() && !isGrounded())

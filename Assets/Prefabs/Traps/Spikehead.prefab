@@ -181,8 +181,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spikehead
   damage: 1
   speed: 1
-  range: 10
+  range: 15
   checkDelay: 1
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  spikeheadSound: {fileID: 8300000, guid: 28ca571395c0401438eb4ed5f1141f16, type: 3}

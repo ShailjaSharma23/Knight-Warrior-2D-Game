@@ -191,6 +191,7 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 128
+  jumpSound: {fileID: 8300000, guid: 29501c07591ab794b9b88b2be645a6e7, type: 3}
 --- !u!95 &5557613483426081718
 Animator:
   serializedVersion: 7
@@ -238,6 +239,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  fireballSound: {fileID: 8300000, guid: bdcfe2a31e69c694c89b4461d621b274, type: 3}
 --- !u!114 &3144861369798803929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,11 +253,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   startingHealth: 3
-  iFramesDuration: 2
+  iFramesDuration: 1.5
   numberOfFlashes: 3
   components:
   - {fileID: 6689590937871068721}
   - {fileID: 7723421363971406397}
+  deathSound: {fileID: 8300000, guid: 8a1f90771c3940649b1f0ac21727b86f, type: 3}
+  hurtSound: {fileID: 8300000, guid: 1ae9a0d0fb7acb9419dfc2bef43e7068, type: 3}
 --- !u!1 &9033736667733554790
 GameObject:
   m_ObjectHideFlags: 0
