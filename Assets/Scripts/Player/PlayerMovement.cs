@@ -16,6 +16,18 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private BoxCollider2D boxCollider;
 
+    [Header("Coyote Time")]
+    [SerializeField] private float coyoteTime;
+    private float coyoteCounter;
+
+    [Header("Multiple Jumps")]
+    [SerializeField] private int extraJumps;
+    private int jumpCounter;
+
+    [Header("Wall Jumping")]
+    [SerializeField] private float wallJumpX;
+    [SerializeField] private float wallJumpY;
+
     [Header("SFX")]
     [SerializeField] private AudioClip jumpSound;
 
@@ -37,31 +49,39 @@ public class PlayerMovement : MonoBehaviour
         else if (Keyboard.current.dKey.isPressed)
             horizontalInput = 1f;
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && (isGrounded() || onWall()))
-            jumpPressed = true;
-
-    }
-
-    // Use FixedUpdate for physics-based movement becauseit works in time intervals regardless of frame rate
-    private void FixedUpdate()
-    {
-
-        // flip palyer when moving left and right
+        // Flip player when moving left and right
         if (horizontalInput > 0)
             transform.localScale = new Vector3(1.2f, 1.2f, 1);
         else if (horizontalInput < 0)
             transform.localScale = new Vector3(-1.2f, 1.2f, 1);
 
-
-
         // Set animation parameters
         anim.SetBool("run", horizontalInput != 0);
         anim.SetBool("grounded", isGrounded());
 
-        // Wall jump cooldown logic
+        // Jump
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            jumpPressed = true;
+
+        // Adjustable jump height
+        if (Keyboard.current.spaceKey.wasReleasedThisFrame && body.linearVelocity.y > 0)
+            body.linearVelocity = new Vector2(body.linearVelocity.x, body.linearVelocity.y / 2);
+
+        // Coyote time
+        if (isGrounded())
+        {
+            coyoteCounter = coyoteTime;
+            jumpCounter = extraJumps;
+        }
+        else
+            coyoteCounter -= Time.deltaTime;
+    }
+
+    // Use FixedUpdate for physics-based movement because it works in time intervals regardless of frame rate
+    private void FixedUpdate()
+    {
         if (wallJumpCooldown > 0.2f)
         {
-
             body.linearVelocity = new Vector2(horizontalInput * moveSpeed, body.linearVelocity.y);
 
             if (onWall() && !isGrounded())
@@ -70,44 +90,63 @@ public class PlayerMovement : MonoBehaviour
                 body.linearVelocity = Vector2.zero;
             }
             else
-                body.gravityScale = 7;
-
-            if (jumpPressed)
             {
-                Jump();
-
-                if(Keyboard.current.spaceKey.wasPressedThisFrame && (isGrounded() || onWall()))
-                {
-                    SoundManager.instance.PlaySound(jumpSound);
-                }
+                body.gravityScale = 7;
             }
         }
         else
+        {
             wallJumpCooldown += Time.fixedDeltaTime;
+        }
+
+        // Jump logic
+        if (jumpPressed)
+        {
+            Jump();
+            jumpPressed = false;
+        }
     }
 
     private void Jump()
     {
+        // If coyote time is over, not on a wall, and no extra jumps left, don't jump
+        if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0)
+            return;
+
+        SoundManager.instance.PlaySound(jumpSound);
+
         if (isGrounded())
         {
-            body.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            SoundManager.instance.PlaySound(jumpSound);
-            jumpPressed = false;
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
         }
         else if (onWall() && !isGrounded())
         {
-            if(horizontalInput == 0)
-                {
-                    body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
-                    transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-                }
-             else
-                body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 5, 6);
+            if (horizontalInput == 0)
+            {
+                body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, 0);
+                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+                body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY);
 
             wallJumpCooldown = 0;
-            jumpPressed = false;
+        }
+        else
+        {
+            if (coyoteCounter > 0)
+            {
+                body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+            }
+            else if (jumpCounter > 0)
+            {
+                body.linearVelocity = new Vector2(body.linearVelocity.x, jumpForce);
+                jumpCounter--;
+            }
         }
 
+        // Prevent using coyote time twice
+        coyoteCounter = 0;
+        jumpPressed = false;
     }
 
     private bool isGrounded()
