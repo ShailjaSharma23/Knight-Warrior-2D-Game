@@ -7,16 +7,20 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject[] fireballs;
     [SerializeField] private AudioClip fireballSound;
+    [SerializeField] private AudioClip swordSound;
 
     private Animator anim;
     private PlayerMovement playerMovement;
     private float cooldownTimer = Mathf.Infinity;
+
+    private SwordAttack swordAttack;
 
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
+        swordAttack = GetComponent<SwordAttack>();
     }
 
     private void Update()
@@ -24,7 +28,14 @@ public class PlayerAttack : MonoBehaviour
 
         if (playerMovement != null && Mouse.current.leftButton.wasPressedThisFrame && playerMovement.canAttack() && cooldownTimer > attackCooldown)
         {
-            Attack();
+
+            anim.SetTrigger("attack");
+        }
+
+        if (playerMovement != null && Mouse.current.rightButton.wasPressedThisFrame && playerMovement.canAttack() && cooldownTimer > attackCooldown)
+        {
+
+            anim.SetTrigger("swordattack");
         }
         cooldownTimer += Time.deltaTime;
     }
@@ -32,19 +43,25 @@ public class PlayerAttack : MonoBehaviour
     private void Attack()
     {
         SoundManager.instance.PlaySound(fireballSound);
-        anim.SetTrigger("attack");
         cooldownTimer = 0;
         // pool fireballs
         fireballs[FindFireball()].transform.position = firePoint.position;
         fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
     }
 
+    private void SwordAttack()
+    {
+        SoundManager.instance.PlaySound(swordSound);
+        cooldownTimer = 0;
+        swordAttack.Attack();
+    }
+
     private int FindFireball()
     {
-        for(int i=0;i < fireballs.Length; i++)
+        for (int i = 0; i < fireballs.Length; i++)
         {
-          if(!fireballs[i].activeInHierarchy)
-                return i; 
+            if (!fireballs[i].activeInHierarchy)
+                return i;
         }
         return 0;
     }

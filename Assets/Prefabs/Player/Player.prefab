@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 5557613483426081718}
   - component: {fileID: 7723421363971406397}
   - component: {fileID: 3144861369798803929}
+  - component: {fileID: 898831737575510257}
+  - component: {fileID: 3981220235558314331}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -32,8 +34,8 @@ Transform:
   m_GameObject: {fileID: 608612073298229496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.686, y: -1.582, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalPosition: {x: -7.686, y: -2.11, z: 0}
+  m_LocalScale: {x: 1.05, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9174624337219582979}
@@ -88,7 +90,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 20daa800a641d9e4cae18a06630db1ef, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 097737625e3c0e8419ccfffab34674a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -132,7 +134,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0070516765, y: -0.5502118}
+  m_Offset: {x: -0.041213483, y: -0.03240919}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -142,7 +144,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8269724, y: 1.3140872}
+  m_Size: {x: 0.7586488, y: 1.8145418}
   m_EdgeRadius: 0
 --- !u!50 &8790329780434093451
 Rigidbody2D:
@@ -244,6 +246,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   fireballSound: {fileID: 8300000, guid: bdcfe2a31e69c694c89b4461d621b274, type: 3}
+  swordSound: {fileID: 0}
 --- !u!114 &3144861369798803929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +267,38 @@ MonoBehaviour:
   - {fileID: 7723421363971406397}
   deathSound: {fileID: 8300000, guid: 8a1f90771c3940649b1f0ac21727b86f, type: 3}
   hurtSound: {fileID: 8300000, guid: 1ae9a0d0fb7acb9419dfc2bef43e7068, type: 3}
+--- !u!114 &898831737575510257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608612073298229496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c233f4f3952e5468137f046fd23b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRespawn
+  checkpointSound: {fileID: 8300000, guid: bf49c7f2a2b5c97408a68fca5e11fdc8, type: 3}
+--- !u!114 &3981220235558314331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608612073298229496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23b5b8e45366d2443bd86d70a1c46902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SwordAttack
+  range: 3
+  damage: 1
+  colliderDistance: 0.33
+  boxCollider: {fileID: 7039434292368805398}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &9033736667733554790
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +324,7 @@ Transform:
   m_GameObject: {fileID: 9033736667733554790}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9, y: -0.52, z: 0}
+  m_LocalPosition: {x: 0.9, y: -0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

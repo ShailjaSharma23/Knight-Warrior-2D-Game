@@ -52,11 +52,11 @@ public class Health : MonoBehaviour
                 anim.SetTrigger("die");
 
                 // Deactivate all attached components
-                foreach(Behaviour component in components)
+                foreach (Behaviour component in components)
                 {
                     component.enabled = false;
                 }
-                dead=true;
+                dead = true;
                 SoundManager.instance.PlaySound(deathSound);
             }
 
@@ -68,6 +68,21 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + healthToAdd, 0, startingHealth);
     }
 
+    public void Respawn()
+    {
+        dead = false;
+        AddHealth(startingHealth);
+        anim.ResetTrigger("Die");
+        anim.Play("Idle");
+        StartCoroutine(Invulnerability());
+
+        // activate all attached components
+        foreach (Behaviour component in components)
+            component.enabled = true;
+
+    
+    }
+
     private IEnumerator Invulnerability()
     {
         invulnerable = true;
@@ -76,10 +91,10 @@ public class Health : MonoBehaviour
         for (int i = 0; i < numberOfFlashes; i++)
         {
             spriteRend.color = new Color(1, 0, 0, 0.5f);
-            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2) );
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
             spriteRend.color = Color.white;
-            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2) );
-        }   
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
+        }
 
         Physics2D.IgnoreLayerCollision(8, 9, false);
         invulnerable = false;

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
@@ -12,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private bool jumpPressed;
     private float wallJumpCooldown;
+
+    private SpriteRenderer sr;
 
     private Animator anim;
     private BoxCollider2D boxCollider;
@@ -33,10 +37,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+    Debug.Log(gameObject.name);
         // Get references to components from object
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
+
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Use Update for input handling because it runs every frame and can detect input changes immediately
@@ -51,9 +58,17 @@ public class PlayerMovement : MonoBehaviour
 
         // Flip player when moving left and right
         if (horizontalInput > 0)
-            transform.localScale = new Vector3(1.2f, 1.2f, 1);
+        {
+            // sr.flipX = false;
+            transform.localScale = new Vector3(1.05f, 1, 1);
+        }
+
         else if (horizontalInput < 0)
-            transform.localScale = new Vector3(-1.2f, 1.2f, 1);
+        {
+            // sr.flipX = true;
+            transform.localScale = new Vector3(-1.05f, 1, 1);
+        }
+
 
         // Set animation parameters
         anim.SetBool("run", horizontalInput != 0);
