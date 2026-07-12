@@ -1,4 +1,4 @@
-# 2D Platformer Game
+# Knight Warrior - 2D Platformer Game
 
 A pixel-art 2D platformer game developed in Unity using C#. This project focuses on building polished platforming mechanics, combat, enemy AI, UI systems, and level progression while following game development best practices.
 
