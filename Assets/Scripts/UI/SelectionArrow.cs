@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class SelectionArrow : MonoBehaviour
 {
@@ -13,7 +14,31 @@ public class SelectionArrow : MonoBehaviour
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
+    }
 
+    private void Start()
+    {
+        for (int i = 0; i < options.Length; i++)
+        {
+            int index = i;
+            Button btn = options[index].GetComponent<Button>();
+            if (btn != null)
+            {
+                btn.onClick.AddListener(() => SoundManager.instance.PlaySound(selectSound));
+            }
+
+            // mouse hover
+            EventTrigger trigger = options[index].gameObject.GetComponent<EventTrigger>();
+            if (trigger == null)
+                trigger = options[index].gameObject.AddComponent<EventTrigger>();
+
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerEnter;
+            entry.callback.AddListener((eventData) => {
+                OnPointerEnterOption(index);
+            });
+            trigger.triggers.Add(entry);
+        }
     }
 
     private void Update()
@@ -42,9 +67,19 @@ public class SelectionArrow : MonoBehaviour
         rect.position = new Vector3(rect.position.x, options[currPos].position.y, 0);
     }
 
+    private void OnPointerEnterOption(int index)
+    {
+        if (currPos != index)
+        {
+            currPos = index;
+            SoundManager.instance.PlaySound(changeSound);
+            rect.position = new Vector3(rect.position.x, options[currPos].position.y, 0);
+        }
+    }
+
     private void Interact()
     {
-        SoundManager.instance.PlaySound(selectSound);
+        // sound will be played by onclick listener
         options[currPos].GetComponent<Button>().onClick.Invoke();
     }
 }
