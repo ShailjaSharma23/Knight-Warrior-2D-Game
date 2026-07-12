@@ -49,7 +49,17 @@ public class Health : MonoBehaviour
         {
             if (!dead)
             {
-                anim.SetTrigger("die");
+                if (anim != null)
+                {
+                    foreach (AnimatorControllerParameter param in anim.parameters)
+                    {
+                        if (param.name == "grounded")
+                            anim.SetBool("grounded", true);
+                        if (param.name == "run")
+                            anim.SetBool("run", false);
+                    }
+                    anim.SetTrigger("die");
+                }
 
                 // Deactivate all attached components
                 foreach (Behaviour component in components)
@@ -72,7 +82,7 @@ public class Health : MonoBehaviour
     {
         dead = false;
         AddHealth(startingHealth);
-        anim.ResetTrigger("Die");
+        anim.ResetTrigger("die");
         anim.Play("Idle");
         StartCoroutine(Invulnerability());
 
