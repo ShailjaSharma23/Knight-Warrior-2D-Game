@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
     {
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            Debug.Log("Escape Pressed");
             if(pauseScreen.activeInHierarchy)
                 PauseGame(false);
             else
