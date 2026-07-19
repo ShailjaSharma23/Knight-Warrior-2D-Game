@@ -38,8 +38,14 @@ public class MenuManager : MonoBehaviour
 
     public void LoadLevel(int levelIndex)
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(levelIndex);
     }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void QuitGame()
     {
         Application.Quit();
